@@ -62,28 +62,44 @@ span {
 
 ===============================================
 
-var $ = function(id)
+	var $ = function(id)
 {
 	return document.getElementById(id);
 };	
-function calculatesales_tax (subtotal , tax_rate) 
+function calculatesales_tax (subtotal , tax_rate, total) 
 {
-	var sales_tax = subtotal * tax_rate;
-	sales_tax = tax.toFixed(2);
-	return sales_tax;	
+	var sales_tax = subtotal *( tax_rate/100);
+	sales_tax = sales_tax.toFixed(2);
+	return sales_tax;
+
 };
 
+ function calculatetotal (subtotal, sales_tax){
+	 var total = (subtotal + sales_tax)
+	 total= total.toFixed(2);
+	 return total;
+ }; 
 
-function processEntries() 
+ var processEntries = function() 
 {
 	var subtotal = parseFloat($("subtotal").value);
 	var tax_rate = parseFloat($("tax_rate").value);
+	if(subtotal < 10000 && subtotal > 1 && tax_rate > 1 && tax_rate < 12){
+		
 	$("sales_tax").value = calculatesales_tax(subtotal, tax_rate);
+	}
+	else{
+		alert("Subtotal Must be >0 and <10000 Tax \n Rate must be > 0 and < 12")
+		
+	}
+	var sales_tax = parseFloat($("sales_tax").value);
+	$("total").value = calculatetotal( sales_tax, subtotal);
 };
   
 
 window.onload = function() 
 {
 $("calculate").onclick = processEntries;
+$("total").onclick = processEntries;
 $("subtotal").focus();
 };
